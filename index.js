@@ -47,8 +47,21 @@ async function run() {
             const result = await orders.deleteOne(query);
             res.send(result);
         })
+        app.patch('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    isApprove: data,
+                },
+            };
+            const result = await orders.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
     } catch (err) {
-        
+        console.log(err.message);
     }
 }
 run().catch(err => console.log(err))

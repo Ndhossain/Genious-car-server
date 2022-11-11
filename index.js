@@ -37,10 +37,10 @@ async function run() {
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'} )
             res.send({token});
         })
-
         // service
         app.get('/services', async (req, res) => {
-            const cursor = await services.find({}).toArray();
+            // const cursor = await services.find({"price": { $gt: 100, $lt: 200 }}).sort().toArray();
+            const cursor = await services.find({}).sort({price: -1}).toArray();
             res.send(cursor);
         });
         app.get('/services/:id', async (req, res) => {
